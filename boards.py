@@ -49,19 +49,26 @@ def main() -> int:
     for b in boards:
         print(b)
 
-    best = [' ']*36
+    best = ['_']*36
     for symbol in ('F', 'G', 'S'):
         if symbol in user_board:
             continue
         appearences = [0]*36
         for i in range(36):
             for board in boards:
-                if board[i] == symbol or board[i] == 'F':  # Should probably also count F 
+                if board[i] == symbol:
                     appearences[i] += 1
+                    if symbol != 'F' and board[i] == 'F':  # +1 if F can also be there (and we are not F)
+                        appearences[i] += 1
         indices = [i for i in range(len(appearences)) if appearences[i] == max(appearences)]
         for i in indices:
-            if best[i] != ' ':
-                best[i] += symbol
+            print(symbol, indices)
+            if best[i] == 'F' and symbol == 'G':
+                best[i] = 'g'
+            elif best[i] == 'F' and symbol == 'S':
+                best[i] = 's'
+            elif best[i] == 'G' and symbol == 'S':
+                best[i] = 'b'
             else:
                 best[i] = symbol
 
